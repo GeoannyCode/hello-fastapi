@@ -1,5 +1,8 @@
 #Python
-from typing import Optional
+from typing import (
+    Optional
+)
+
 from enum import Enum
 
 #Pydantic
@@ -21,9 +24,18 @@ class HairColor(Enum):
     red="red"
 
 class Location(BaseModel):
-    city: str
-    state: str
-    country: str
+    city: str = Field(..., min_length=1, max_length = 50)
+    state: str = Field(..., min_length=1, max_length = 50)
+    country: str = Field(..., min_length=1, max_length = 50)
+
+    # class Config:
+    #     schema_extra = {
+    #         "example": {
+    #             "city":"Quito",
+    #             "state": "Pichincha",
+    #             "country": "Ecuador"
+    #         }
+    #     }
 
 class Person(BaseModel):
     first_name: str = Field(..., min_length=1, max_length = 50)
@@ -31,6 +43,17 @@ class Person(BaseModel):
     age: int = Field(..., gt=0, le=115)
     hair_color: Optional[HairColor] = Field(default=None)
     is_married: Optional[bool] = Field(default=None)
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "first_name": "Diego",
+                "last_name": "Bracero",
+                "age": 25,
+                "hair_color": "white",
+                "is_married": False
+            }
+        }
 
 @app.get("/") #path decorator
 def home():
@@ -87,8 +110,9 @@ def update_person(
         gt=0    
     ),
     person: Person = Body(...),
-    location: Location = Body(...)
+    #location: Location = Body(...)
 ):
-    results = person.dict()
-    results.update(location.dict())
-    return results
+    #results = person.dict()
+    #results.update(location.dict())
+    #return results
+    return person
