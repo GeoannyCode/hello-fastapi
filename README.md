@@ -9,7 +9,7 @@ Instalación y configuración
 ## 1. Clona este repositorio a tu computadora:
 
 ```
-git clone https://github.com/tu-usuario/hello-fastapi.git
+git clone https://github.com/GeoannyCode/hello-fastapi
 
 ```
 ## 2. Accede al directorio del proyecto:
