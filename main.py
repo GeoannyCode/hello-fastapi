@@ -12,7 +12,8 @@ from pydantic import Field
 #FastAPI 
 from fastapi import FastAPI
 from fastapi import status
-from fastapi import Body, Query, Path
+from fastapi import Body, Query, Path, Form
+from starlette.types import Message
 
 app = FastAPI()
 
@@ -63,6 +64,10 @@ class Person(PersonBase):
 
 class PersonOut(PersonBase):
     pass
+
+class LoginOut(BaseModel):
+    username: str = Field(..., max_length=20, example="miguel2021")
+    message: str = Field(default="Login Succesfully!")
 
 @app.get(path="/", status_code=status.HTTP_200_OK) #path decorator
 def home():
@@ -129,3 +134,14 @@ def update_person(
     #results.update(location.dict())
     #return results
     return person
+
+#
+
+@app.post(
+    path="/login",
+    response_model=LoginOut,
+    status_code=status.HTTP_200_OK
+)
+
+def login(username:str = Form(...), password:str = Form(...)):
+    return LoginOut(username=username)
